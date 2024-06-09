@@ -68,7 +68,7 @@ namespace FASTER.ViewModel
             if (!Profile.ServerCfg.HeadlessClientEnabled) return;
             if (!VerifyBeforeLaunch()) return;
 
-            //Launching... 
+            //Launching...
             DisplayMessage($"Launching Headless Clients for {Profile.Name}...");
             string commandLine;
             for (int hc = 1; hc <= Profile.HeadlessNumber; hc++ )
@@ -90,6 +90,10 @@ namespace FASTER.ViewModel
             List<string> arguments = new()
             {
                 "-client",
+                " -hugePages",
+                " -malloc=mimalloc_v214_lock_pages",
+                " -noSound",
+                " -setThreadCharacteristics",
                 " -connect=127.0.0.1",
                 $" -password={Profile.ServerCfg.Password}",
                 $" \"-profiles={Path.Combine(Profile.ArmaPath, "Servers", $"{Profile.Id}_hc{hc}")}\"",
@@ -121,7 +125,7 @@ namespace FASTER.ViewModel
         {
             if (!VerifyBeforeLaunch()) return;
 
-            //Launching... 
+            //Launching...
             DisplayMessage($"Launching Profile {Profile.Name}...");
 
             Analytics.TrackEvent("Profile - Clicked LaunchServer", new Dictionary<string, string>
@@ -189,7 +193,7 @@ namespace FASTER.ViewModel
             if (!Directory.Exists(Path.Combine(path, "Servers", profile)))
             { return false; }
 
-            return File.Exists(Path.Combine(path, "Servers", profile, "server_config.cfg")) 
+            return File.Exists(Path.Combine(path, "Servers", profile, "server_config.cfg"))
                 && File.Exists(Path.Combine(path, "Servers", profile, "server_basic.cfg"));
         }
 
@@ -243,7 +247,7 @@ namespace FASTER.ViewModel
             }
 
 
-            var index = Properties.Settings.Default.Profiles.FindIndex(p => p.Id == Profile.Id);  
+            var index = Properties.Settings.Default.Profiles.FindIndex(p => p.Id == Profile.Id);
             if (index != -1)
             { Properties.Settings.Default.Profiles[index] = Profile; }
 
@@ -442,7 +446,7 @@ namespace FASTER.ViewModel
 
         public void UnloadData()
         {
-            var index = Properties.Settings.Default.Profiles.FindIndex(p => p.Id == Profile.Id);  
+            var index = Properties.Settings.Default.Profiles.FindIndex(p => p.Id == Profile.Id);
             if (index != -1)
             { Properties.Settings.Default.Profiles[index] = Profile; }
         }
