@@ -114,14 +114,14 @@ namespace FASTER.Models
 
         public string ArmaPath => Path.GetDirectoryName(_executable) ?? string.Empty;
 
-        public int Port 
-        { 
-            get => _port; 
-            set 
-            { 
+        public int Port
+        {
+            get => _port;
+            set
+            {
                 _port = value;
                 RaisePropertyChanged("Port");
-            } 
+            }
         }
 
         public int HeadlessNumber
@@ -367,8 +367,8 @@ namespace FASTER.Models
             }
         }
 
-        public ServerCfg ServerCfg 
-        { 
+        public ServerCfg ServerCfg
+        {
             get => _serverCfg;
             set
             {
@@ -465,7 +465,7 @@ namespace FASTER.Models
                 p.GenerateNewId();
                 p.Name = "New Profile";
             }
-            
+
             return p;
         }
 
@@ -523,6 +523,10 @@ namespace FASTER.Models
                 $" \"-cfg={basic}\"",
                 $" \"-profiles={Path.Combine(ArmaPath, "Servers", Id)}\"",
                 $" -name={Id}",
+                " -hugePages",
+                " -limitFPS=60",
+                " -malloc=mimalloc_v214_lock_pages",
+                " -setThreadCharacteristics",
                 GetDlcAndPlayerMods(playerMods),
                 $"{(!string.IsNullOrWhiteSpace(serverMods) ? $" \"-serverMod={serverMods};\"" : "")}",
                 $"{(EnableHyperThreading ? " -enableHT" : "")}",
