@@ -71,7 +71,13 @@ namespace FASTER.ViewModel
 
         public async Task AddLocalModAsync()
         {
-            var localPath = MainWindow.Instance.SelectFolder(Properties.Settings.Default.modStagingDirectory);
+            var copyArmaMods = new List<ArmaMod>(ModsCollection.ArmaMods);
+            foreach (var mod in copyArmaMods)
+            {
+                DeleteMod(mod);
+            }
+
+            var localPath = MainWindow.Instance.SelectFolder(Properties.Settings.Default.serverPath + "\\!Workshop");
 
             if (string.IsNullOrEmpty(localPath))
                 return;
@@ -93,12 +99,17 @@ namespace FASTER.ViewModel
             progress.Maximum = oldPaths.Count;
             foreach (var oldPath in oldPaths.Where((path) => Directory.Exists(path)))
             {
-                uint modID = 0;
                 var existingIds = ModsCollection.ArmaMods.Select(mod => mod.WorkshopId);
-                while (modID == 0 || existingIds.Contains(modID))
+                var fi = new FileInfo(oldPath);
+                if (!Path.Exists(fi.LinkTarget))
                 {
-                    Random r = new();
-                    modID = (uint)(uint.MaxValue - r.Next(ushort.MaxValue / 2));
+                    continue;
+                }
+                var p = Path.GetFileName(fi.LinkTarget);
+                uint modID = uint.Parse(p);
+                if (existingIds.Contains(modID))
+                {
+                    continue;
                 }
                 var newPath = Path.Combine(Properties.Settings.Default.modStagingDirectory, modID.ToString());
                 if (Directory.Exists(newPath))
@@ -251,7 +262,7 @@ namespace FASTER.ViewModel
 
             MainWindow.Instance.NavigateToConsole();
             var ans = await MainWindow.Instance.SteamUpdaterViewModel.RunModsUpdater(ModsCollection.ArmaMods);
-            if(ans == UpdateState.LoginFailed) 
+            if(ans == UpdateState.LoginFailed)
                 DisplayMessage("Steam Login Failed");
         }
     }
