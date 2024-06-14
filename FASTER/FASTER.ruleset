@@ -1,5 +1,3 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="SonarQube - FASTER FoxliWay" ToolsVersion="16.0">
-  <Include Path="..\.sonarlint\faster_appcsharp.ruleset" Action="Default" />
-  <Include Path="..\.sonarlint\foxlider_fastercsharp.ruleset" Action="Default" />
 </RuleSet>
