@@ -71,10 +71,13 @@ namespace FASTER.ViewModel
 
         public async Task AddLocalModAsync()
         {
-            var copyArmaMods = new List<ArmaMod>(ModsCollection.ArmaMods);
-            foreach (var mod in copyArmaMods)
+            foreach (var mod in ModsCollection.ArmaMods)
             {
-                DeleteMod(mod);
+                var fi = new FileInfo(mod.Path);
+                if (!Directory.Exists(fi.LinkTarget))
+                {
+                    DeleteMod(mod);
+                }
             }
 
             var localPath = MainWindow.Instance.SelectFolder(Properties.Settings.Default.serverPath + "\\!Workshop");
