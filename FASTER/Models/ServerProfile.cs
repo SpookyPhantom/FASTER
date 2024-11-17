@@ -525,7 +525,7 @@ namespace FASTER.Models
                 $" -name={Id}",
                 " -hugePages",
                 " -limitFPS=60",
-                " -malloc=mimalloc_v214_lock_pages",
+                " -malloc=mimalloc_v217_lock_pages",
                 " -setThreadCharacteristics",
                 GetDlcAndPlayerMods(playerMods),
                 $"{(!string.IsNullOrWhiteSpace(serverMods) ? $" \"-serverMod={serverMods};\"" : "")}",

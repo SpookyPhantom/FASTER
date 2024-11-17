@@ -91,7 +91,7 @@ namespace FASTER.ViewModel
             {
                 "-client",
                 " -hugePages",
-                " -malloc=mimalloc_v214_lock_pages",
+                " -malloc=mimalloc_v217_lock_pages",
                 " -noSound",
                 " -setThreadCharacteristics",
                 " -connect=127.0.0.1",
